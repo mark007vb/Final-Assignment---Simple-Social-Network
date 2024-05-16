@@ -1,0 +1,49 @@
+{% extends 'base.html' %}
+
+{% block content %}
+{% if 'user_id' in session %}
+<div class="create-post">
+    <h2>Create a Post</h2>
+    <form action="{{ url_for('create_post') }}" method="POST">
+        <textarea name="content" placeholder="Write your post here" maxlength="140"></textarea>
+        <button type="submit">Post</button>
+    </form>
+</div>
+{% endif %}
+
+<div class="posts">
+    <br><a href="{{ url_for('birthdays') }}"><button>Birthday Today</button></a><br><br><hr><br>
+    {% for post in posts[:3] %}
+    <div class="post">
+        <p><a href="{{ url_for('profile', nickname=post.user.nickname) }}"><strong>{{ post.user.nickname }}</strong></a>: {{ post.content }}</p>
+        <form action="{{ url_for('like_post', post_id=post.id) }}" method="POST">
+            <button type="submit" class="like-btn">Like</button>
+        </form>
+        <span class="like-count">{{ post.likes|length }}</span>
+    </div>
+    {% endfor %}
+    
+    <div id="additional-posts" style="display: none;">
+        {% for post in posts[3:] %}
+        <div class="post">
+            <p><a href="{{ url_for('profile', nickname=post.user.nickname) }}"><strong>{{ post.user.nickname }}</strong></a>: {{ post.content }}</p>
+            <form action="{{ url_for('like_post', post_id=post.id) }}" method="POST">
+                <button type="submit" class="like-btn">Like</button>
+            </form>
+            <span class="like-count">{{ post.likes|length }}</span>
+        </div>
+        {% endfor %}
+    </div>
+
+    <button id="view-more-btn">View More</button>
+</div>
+
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+    document.getElementById("view-more-btn").addEventListener("click", function() {
+        document.getElementById("additional-posts").style.display = "block";
+        this.style.display = "none";
+    });
+});
+</script>
+{% endblock %}

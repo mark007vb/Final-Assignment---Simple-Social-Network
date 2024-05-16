@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="profile">
+    <h1>{{ user.nickname }}</h1>
+    <p>Email: {{ user.email }}</p>
+    <p>Birth Date: {{ user.birth_date }}</p>
+    <h2>Write a Post</h2>
+    <form action="{{ url_for('create_post') }}" method="POST">
+        <textarea name="content" placeholder="Write your post here (up to 140 characters)" maxlength="140"></textarea>
+        <button type="submit">Post</button>
+    </form>
+    <h2>Posts:</h2>
+    <div class="user-posts">
+        {% for post in user.posts %}
+        <div class="post">
+            <p>{{ post.content }}</p>
+            <form action="{{ url_for('like_post', post_id=post.id) }}" method="POST">
+                <button type="submit" class="like-btn">Like</button>
+            </form>
+            <span class="like-count">{{ post.likes|length }}</span>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}

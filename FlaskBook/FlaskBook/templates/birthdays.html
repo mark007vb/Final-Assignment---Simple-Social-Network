@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="birthdays">
+    <h2>Birthdays Today</h2>
+    {% if users %}
+    <ul>
+        {% for user in users %}
+        <li>{{ user.nickname }} - {{ user.birth_date }}</li>
+        {% endfor %}
+    </ul>
+    {% else %}
+    <p>No birthdays today.</p>
+    {% endif %}
+</div>
+{% endblock %}
